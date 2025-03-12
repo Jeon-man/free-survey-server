@@ -6,8 +6,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.init();
+  await app.listen(3000);
   return app;
 }
+bootstrap();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const app = await bootstrap();

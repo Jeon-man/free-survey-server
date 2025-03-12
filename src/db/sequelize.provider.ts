@@ -15,6 +15,9 @@ export class SequelizeProvider implements SequelizeOptionsFactory {
     const schema = this.config.get<string>('DB_SCHEMA');
 
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
+      dialectModule: require('pg'),
+
       dialect: 'postgres',
       host: this.config.get<string>('DB_HOST'),
       port: this.config.get<number>('DB_PORT'),
