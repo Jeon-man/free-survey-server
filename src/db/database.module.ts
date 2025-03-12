@@ -7,7 +7,7 @@ import { SequelizeProvider } from './sequelize.provider';
   imports: [
     SequelizeModule.forRootAsync({
       inject: [ConfigModule],
-      useExisting: SequelizeProvider,
+      useClass: SequelizeProvider,
     }),
   ],
 })
