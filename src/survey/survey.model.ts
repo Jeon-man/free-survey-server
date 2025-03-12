@@ -7,6 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
+import { v4 as uuidv4 } from 'uuid';
 @Table({
   tableName: 'Survey',
   modelName: 'Survey',
@@ -17,7 +18,7 @@ export class Survey extends Model<
   InferCreationAttributes<Survey, { omit: 'id' }>
 > {
   @PrimaryKey
-  @Column({ type: DataType.UUID, defaultValue: () => crypto.randomUUID() })
+  @Column({ type: DataType.UUID, defaultValue: uuidv4 })
   id: string;
 
   @AllowNull(false)
