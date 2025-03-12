@@ -5,6 +5,8 @@ import {
   SequelizeOptionsFactory,
 } from '@nestjs/sequelize';
 
+import pg from 'pg';
+
 @Injectable()
 export class SequelizeProvider implements SequelizeOptionsFactory {
   constructor(private readonly config: ConfigService) {}
@@ -15,10 +17,8 @@ export class SequelizeProvider implements SequelizeOptionsFactory {
     const schema = this.config.get<string>('DB_SCHEMA');
 
     return {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
-      dialectModule: require('pg'),
-
       dialect: 'postgres',
+      dialectModule: pg,
       host: this.config.get<string>('DB_HOST'),
       port: this.config.get<number>('DB_PORT'),
       username: this.config.get<string>('DB_USERNAME'),
