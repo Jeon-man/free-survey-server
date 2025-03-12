@@ -7,7 +7,11 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-@Table
+@Table({
+  tableName: 'Survey',
+  modelName: 'Survey',
+  timestamps: false,
+})
 export class Survey extends Model<
   InferAttributes<Survey>,
   InferCreationAttributes<Survey, { omit: 'id' }>
