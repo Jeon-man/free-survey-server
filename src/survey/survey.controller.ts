@@ -1,32 +1,20 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateSurveyBody } from './survey.dto';
-import { Survey } from './survey.model';
+import { SurveyService } from './survey.service';
 
 @Controller('surveys')
 export class SurveyController {
-  constructor(
-    @InjectModel(Survey)
-    private readonly surveyModel: typeof Survey,
-  ) {}
+  constructor(private readonly surveyService: SurveyService) {}
 
   @Post()
   async createSurvey(@Body() createSurveyData: CreateSurveyBody) {
-    return this.surveyModel.create(createSurveyData);
+    return this.surveyService.createSurvey(createSurveyData);
   }
 
   @Get(':surveyId')
-  async getSurvey(@Param('surveyId') surveyId: number) {
-    return this.surveyModel.findOne({
-      where: { id: surveyId },
-      rejectOnEmpty: new NotFoundException(`Not found Survey`),
+  async getSurvey(@Param('surveyId') surveyId: string) {
+    return this.surveyService.findSurvey({
+      id: surveyId,
     });
   }
 }
