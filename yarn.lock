@@ -2390,6 +2390,11 @@ async@^3.2.3:
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.6.tgz#1b0728e14929d51b85b449b7f06e27c1145e38ce"
   integrity sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==
 
+async_hooks@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/async_hooks/-/async_hooks-1.0.0.tgz#815f5e861fe73f64eb29fd942c32e95c8064052f"
+  integrity sha512-t4BSJgx48V3e7U6Ll3/WOUNmxIRPzmPdxVfgbyzcnRItEnn4iKp4F//b0sV3L9hzbdr5qxWdNWzOF7t+rjYSfA==
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
