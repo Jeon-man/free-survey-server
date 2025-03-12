@@ -9,7 +9,7 @@ async function bootstrap() {
   await app.listen(3000);
   return app;
 }
-bootstrap();
+// bootstrap();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const app = await bootstrap();
