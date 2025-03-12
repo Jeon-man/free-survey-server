@@ -1,9 +1,4 @@
-import {
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-  UUIDV4,
-} from 'sequelize';
+import { InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import {
   AllowNull,
   Column,
@@ -18,7 +13,7 @@ export class Survey extends Model<
   InferCreationAttributes<Survey, { omit: 'id' }>
 > {
   @PrimaryKey
-  @Column({ type: DataType.UUID, defaultValue: UUIDV4 })
+  @Column({ type: DataType.UUID, defaultValue: () => crypto.randomUUID() })
   id: string;
 
   @AllowNull(false)
