@@ -35,5 +35,5 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const fastify = app.getHttpAdapter().getInstance();
 
-  fastify.server.emit('request', req, res);
+  fastify.routing(req, res);
 }
