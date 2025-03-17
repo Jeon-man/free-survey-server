@@ -1,11 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
-import { hashPassword } from '../utils/hash';
+import { comparePassword, hashPassword } from '../utils/hash';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class SurveyService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async findSurvey(surveyWhereUniqueInput: Prisma.SurveyWhereUniqueInput) {
     return this.prisma.survey.findUnique({
@@ -54,5 +62,19 @@ export class SurveyService {
       data,
       where,
     });
+  }
+
+  async compareSurveyPassword(surveyId: string, password: string) {
+    const survey = await this.findSurvey({
+      id: surveyId,
+    });
+    if (!survey) throw new NotFoundException(`Survey${surveyId} not found`);
+
+    const compare = comparePassword(password, survey.password);
+    if (!compare) throw new BadRequestException('Password is incorrect');
+
+    const token = await this.jwtService.signAsync({ surveyId });
+
+    return token;
   }
 }

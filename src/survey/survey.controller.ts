@@ -17,4 +17,17 @@ export class SurveyController {
       id: surveyId,
     });
   }
+
+  @Post(':surveyId')
+  async compareSurveyPassword(
+    @Param('surveyId') surveyId: string,
+    @Body('password') password: string,
+  ) {
+    const token = await this.surveyService.compareSurveyPassword(
+      surveyId,
+      password,
+    );
+
+    return { result: true, token };
+  }
 }
