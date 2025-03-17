@@ -3,7 +3,7 @@ import { SurveyController } from './survey.controller';
 import { SurveyService } from './survey.service';
 import PrismaModule from '../db/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -11,9 +11,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     JwtModule.registerAsync({
       global: true,
       imports: [ConfigModule],
-      useFactory(config: ConfigService) {
+      useFactory() {
         return {
-          secret: config.get<string>('JWT_SECRET'),
           signOptions: {
             expiresIn: '1d',
           },
