@@ -7,26 +7,36 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { AppModule } from './app.module';
 
-let cachedApp: NestFastifyApplication | null = null;
+type HTTPMethods =
+  | 'DELETE'
+  | 'delete'
+  | 'GET'
+  | 'get'
+  | 'HEAD'
+  | 'head'
+  | 'PATCH'
+  | 'patch'
+  | 'POST'
+  | 'post'
+  | 'PUT'
+  | 'put'
+  | 'OPTIONS'
+  | 'options';
 
 async function bootstrap() {
-  if (!cachedApp) {
-    const app = await NestFactory.create<NestFastifyApplication>(
-      AppModule,
-      new FastifyAdapter(),
-    );
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
 
-    app.enableCors({
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      allowedHeaders: 'Content-Type, Accept',
-    });
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept',
+  });
 
-    await app.init();
-    cachedApp = app;
-  }
-
-  return cachedApp;
+  await app.init();
+  return app;
 }
 // bootstrap();
 
@@ -35,5 +45,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const fastify = app.getHttpAdapter().getInstance();
 
-  fastify.routing(req, res);
+  const result = await fastify.inject({
+    method: (req.method as HTTPMethods) || 'GET',
+    url: req.url || '/',
+    headers: req.headers,
+    payload: req.body as unknown as Record<string, any>,
+  });
+
+  res.status(result.statusCode).send(result.body);
 }
