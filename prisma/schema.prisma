@@ -9,7 +9,8 @@ datasource db {
 }
 
 model Survey {
-  id        String   @id @default(cuid())
-  title      String
+  id          String  @id @default(cuid())
+  title       String
   description String?
+  password    String
 }

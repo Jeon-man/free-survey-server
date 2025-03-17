@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../db/prisma.service';
+import { hashPassword } from '../utils/hash';
 
 @Injectable()
 export class SurveyService {
@@ -29,9 +30,12 @@ export class SurveyService {
     });
   }
 
-  async createSurvey(data: Prisma.SurveyCreateInput) {
+  async createSurvey({ password, ...data }: Prisma.SurveyCreateInput) {
     return this.prisma.survey.create({
-      data,
+      data: {
+        ...data,
+        password: hashPassword(password),
+      },
     });
   }
 
