@@ -7,22 +7,6 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 
 import { AppModule } from './app.module';
 
-type HTTPMethods =
-  | 'DELETE'
-  | 'delete'
-  | 'GET'
-  | 'get'
-  | 'HEAD'
-  | 'head'
-  | 'PATCH'
-  | 'patch'
-  | 'POST'
-  | 'post'
-  | 'PUT'
-  | 'put'
-  | 'OPTIONS'
-  | 'options';
-
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -45,12 +29,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const fastify = app.getHttpAdapter().getInstance();
 
-  const result = await fastify.inject({
-    method: (req.method as HTTPMethods) || 'GET',
-    url: req.url || '/',
-    headers: req.headers,
-    payload: req.body as unknown as Record<string, any>,
-  });
-
-  res.status(result.statusCode).send(result.body);
+  await fastify.ready();
+  fastify.server.emit('request', req, res);
 }
